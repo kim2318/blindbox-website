@@ -1,129 +1,699 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>盲盒世界 - 温子健</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-        
-        .navbar {
-            background: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            color: #ff6b6b;
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        
-        .hero {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-        }
-        
-        .hero h2 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 100px 20px;
-        }
-        
-        .collections-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        
-        .collection-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>盲盒世界 - 探索未知的惊喜</title>
+  <!-- 引入Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- 引入Google字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6C63FF',
+            secondary: '#FF6B9B',
+            dark: '#2D3748',
+            light: '#F7FAFC'
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+  
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    .hero-gradient {
+      background: linear-gradient(135deg, #6C63FF 0%, #FF6B9B 100%);
+    }
+    
+    .blur-bg {
+      backdrop-filter: blur(8px);
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    .animate-pulse-slow {
+      animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
 </head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <h1 class="logo">盲盒世界</h1>
-        </div>
+
+<body class="font-inter bg-light text-dark antialiased">
+  <!-- 导航栏 -->
+  <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300">
+    <nav class="container mx-auto px-4 py-4 flex items-center justify-between blur-bg bg-white/80">
+      <a href="#" class="flex items-center space-x-2">
+        <span class="text-primary text-3xl"><i class="fa fa-gift"></i></span>
+        <span class="text-xl font-bold bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">盲盒世界</span>
+      </a>
+      
+      <!-- 桌面导航 -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="#about" class="font-medium hover:text-primary transition-colors">关于盲盒</a>
+        <a href="#series" class="font-medium hover:text-primary transition-colors">热门系列</a>
+        <a href="#how-to-play" class="font-medium hover:text-primary transition-colors">玩法介绍</a>
+        <a href="#collection" class="font-medium hover:text-primary transition-colors">收藏价值</a>
+        <a href="#buy-guide" class="font-medium hover:text-primary transition-colors">购买指南</a>
+        <a href="#subscribe" class="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-full transition-all shadow-lg hover:shadow-primary/30">
+          立即探索
+        </a>
+      </div>
+      
+      <!-- 移动端菜单按钮 -->
+      <button id="menuBtn" class="md:hidden text-2xl">
+        <i class="fa fa-bars"></i>
+      </button>
     </nav>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobileMenu" class="md:hidden hidden bg-white shadow-lg absolute w-full">
+      <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+        <a href="#about" class="font-medium py-2 hover:text-primary transition-colors">关于盲盒</a>
+        <a href="#series" class="font-medium py-2 hover:text-primary transition-colors">热门系列</a>
+        <a href="#how-to-play" class="font-medium py-2 hover:text-primary transition-colors">玩法介绍</a>
+        <a href="#collection" class="font-medium py-2 hover:text-primary transition-colors">收藏价值</a>
+        <a href="#buy-guide" class="font-medium py-2 hover:text-primary transition-colors">购买指南</a>
+        <a href="#subscribe" class="bg-primary hover:bg-primary/90 text-white px-5 py-3 rounded-full transition-all text-center shadow-lg hover:shadow-primary/30">
+          立即探索
+        </a>
+      </div>
+    </div>
+  </header>
 
-    <section class="hero">
+  <!-- 英雄区域 -->
+  <section class="hero-gradient pt-32 pb-20 md:pt-40 md:pb-32">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-10 md:mb-0">
+          <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold text-white leading-tight text-shadow mb-6">
+            解锁未知的<br>惊喜与乐趣
+          </h1>
+          <p class="text-white/90 text-lg md:text-xl mb-8 max-w-lg">
+            盲盒——充满神秘与期待的潮流文化，每一次开启都是独一无二的惊喜体验。
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="#series" class="bg-white text-primary font-semibold px-8 py-3 rounded-full transition-all shadow-lg hover:shadow-white/30 text-center">
+              浏览热门系列
+            </a>
+            <a href="#how-to-play" class="bg-transparent border-2 border-white text-white font-semibold px-8 py-3 rounded-full transition-all hover:bg-white/10 text-center">
+              了解玩法
+            </a>
+          </div>
+        </div>
+        <div class="md:w-1/2 relative">
+          <img src="https://picsum.photos/id/26/600/600" alt="盲盒展示" class="w-full max-w-md mx-auto rounded-2xl shadow-2xl animate-float">
+          <div class="absolute -bottom-5 -left-5 bg-white p-3 rounded-xl shadow-lg hidden md:block">
+            <p class="font-bold text-primary">限量款</p>
+            <p class="text-sm">隐藏概率1/144</p>
+          </div>
+          <div class="absolute -top-5 -right-5 bg-secondary text-white p-3 rounded-xl shadow-lg hidden md:block">
+            <p class="font-bold">全新系列</p>
+            <p class="text-sm">已发售</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 波浪分隔符 -->
+    <div class="absolute left-0 right-0 bottom-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" class="w-full h-auto">
+        <path fill="#F7FAFC" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 关于盲盒 -->
+  <section id="about" class="py-20">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">什么是盲盒</span>
+        <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">探索盲盒的神秘世界</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">盲盒是一种装有随机款式玩偶或饰品的密封盒子，在打开之前无法确定里面的款式，这种未知性带来了独特的惊喜体验。</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white p-8 rounded-2xl shadow-lg card-hover">
+          <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+            <i class="fa fa-question-circle text-2xl text-primary"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4">未知的惊喜</h3>
+          <p class="text-gray-600">每个盲盒都包含随机款式，在打开的瞬间才能揭晓答案，这种不确定性带来了独特的期待感和惊喜体验。</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-2xl shadow-lg card-hover">
+          <div class="w-14 h-14 bg-secondary/10 rounded-full flex items-center justify-center mb-6">
+            <i class="fa fa-puzzle-piece text-2xl text-secondary"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4">系列收集</h3>
+          <p class="text-gray-600">每个系列包含多个常规款和隐藏款，收集完整一套成为许多爱好者的目标，隐藏款的稀缺性更增加了收藏价值。</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-2xl shadow-lg card-hover">
+          <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+            <i class="fa fa-users text-2xl text-primary"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4">社交文化</h3>
+          <p class="text-gray-600">盲盒爱好者形成了独特的社群文化，玩家之间会进行交换、分享和交流，增加了收藏之外的社交乐趣。</p>
+        </div>
+      </div>
+      
+      <div class="mt-16 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-3xl p-8 md:p-12">
+        <div class="flex flex-col md:flex-row items-center gap-10">
+          <div class="md:w-1/2">
+            <h3 class="text-2xl font-bold mb-4">盲盒的起源与发展</h3>
+            <p class="text-gray-600 mb-4">盲盒起源于日本的福袋文化，后来在欧美发展出玩具盲盒的形式，近年来在全球范围内掀起热潮。</p>
+            <p class="text-gray-600 mb-4">随着设计师玩具文化的兴起，盲盒不再局限于儿童玩具，而是成为一种融合艺术、设计和收藏的潮流文化载体。</p>
+            <p class="text-gray-600">如今，盲盒已经扩展到文具、美妆、数码产品等多个领域，形成了百亿级的市场规模。</p>
+          </div>
+          <div class="md:w-1/2 grid grid-cols-2 gap-4">
+            <img src="https://picsum.photos/id/96/300/300" alt="盲盒历史" class="rounded-xl shadow-md w-full h-48 object-cover">
+            <img src="https://picsum.photos/id/21/300/300" alt="盲盒文化" class="rounded-xl shadow-md w-full h-48 object-cover mt-8">
+            <img src="https://picsum.photos/id/63/300/300" alt="盲盒收藏" class="rounded-xl shadow-md w-full h-48 object-cover">
+            <img src="https://picsum.photos/id/65/300/300" alt="盲盒市场" class="rounded-xl shadow-md w-full h-48 object-cover mt-8">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 热门系列 -->
+  <section id="series" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1 bg-secondary/10 text-secondary rounded-full text-sm font-medium mb-4">热门系列</span>
+        <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">探索最受欢迎的盲盒系列</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">从可爱萌系到潮流艺术，各种风格的盲盒系列满足不同爱好者的收藏需求。</p>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- 系列1 -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/237/400/300" alt="萌宠系列" class="w-full h-64 object-cover">
+            <div class="absolute top-4 right-4 bg-secondary text-white text-sm font-bold px-3 py-1 rounded-full">
+              新品
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">萌宠乐园系列</h3>
+            <p class="text-gray-600 text-sm mb-4">包含12款可爱宠物造型，1款隐藏款稀有度1/100</p>
+            <div class="flex justify-between items-center">
+              <span class="text-primary font-bold">¥69/个</span>
+              <a href="#" class="text-sm bg-primary/10 text-primary px-4 py-2 rounded-full hover:bg-primary hover:text-white transition-colors">
+                查看详情
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 系列2 -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/91/400/300" alt="太空探险系列" class="w-full h-64 object-cover">
+            <div class="absolute top-4 right-4 bg-primary text-white text-sm font-bold px-3 py-1 rounded-full">
+              畅销
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">太空探险系列</h3>
+            <p class="text-gray-600 text-sm mb-4">包含8款宇航员造型，2款隐藏款，夜光特效设计</p>
+            <div class="flex justify-between items-center">
+              <span class="text-primary font-bold">¥79/个</span>
+              <a href="#" class="text-sm bg-primary/10 text-primary px-4 py-2 rounded-full hover:bg-primary hover:text-white transition-colors">
+                查看详情
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 系列3 -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/64/400/300" alt="古风仙子系列" class="w-full h-64 object-cover">
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">古风仙子系列</h3>
+            <p class="text-gray-600 text-sm mb-4">包含10款传统服饰造型，1款特别隐藏款带金箔装饰</p>
+            <div class="flex justify-between items-center">
+              <span class="text-primary font-bold">¥89/个</span>
+              <a href="#" class="text-sm bg-primary/10 text-primary px-4 py-2 rounded-full hover:bg-primary hover:text-white transition-colors">
+                查看详情
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 系列4 -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/42/400/300" alt="街头潮流系列" class="w-full h-64 object-cover">
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">街头潮流系列</h3>
+            <p class="text-gray-600 text-sm mb-4">包含12款潮流人物造型，3款渐变色隐藏款</p>
+            <div class="flex justify-between items-center">
+              <span class="text-primary font-bold">¥75/个</span>
+              <a href="#" class="text-sm bg-primary/10 text-primary px-4 py-2 rounded-full hover:bg-primary hover:text-white transition-colors">
+                查看详情
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="#" class="inline-flex items-center space-x-2 bg-white text-primary border border-primary px-8 py-3 rounded-full font-medium hover:bg-primary hover:text-white transition-colors shadow-md">
+          <span>查看全部系列</span>
+          <i class="fa fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 玩法介绍 -->
+  <section id="how-to-play" class="py-20">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">盲盒玩法</span>
+        <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">如何玩转盲盒</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">盲盒玩法简单有趣，无论是新手还是资深玩家都能找到属于自己的乐趣。</p>
+      </div>
+      
+      <div class="flex flex-col lg:flex-row gap-12 items-center">
+        <div class="lg:w-1/2">
+          <img src="https://picsum.photos/id/118/800/600" alt="盲盒玩法" class="rounded-2xl shadow-xl w-full">
+        </div>
+        
+        <div class="lg:w-1/2">
+          <div class="space-y-8">
+            <div class="flex gap-6">
+              <div class="flex-shrink-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl">1</div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">选择喜欢的系列</h3>
+                <p class="text-gray-600">根据自己的喜好选择盲盒系列，每个系列都有独特的主题和设计风格。</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-6">
+              <div class="flex-shrink-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl">2</div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">购买盲盒</h3>
+                <p class="text-gray-600">可以单买也可以购买整套，单买更有惊喜感，整套则能确保收集完整。</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-6">
+              <div class="flex-shrink-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl">3</div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">开启惊喜</h3>
+                <p class="text-gray-600">拆开包装，揭晓里面的款式，享受未知带来的惊喜体验。</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-6">
+              <div class="flex-shrink-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl">4</div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">收集与交换</h3>
+                <p class="text-gray-600">重复的款式可以与其他玩家交换，共同完成系列收集，也可以展示自己的收藏。</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-10 bg-secondary/10 p-6 rounded-xl">
+            <h4 class="font-bold text-secondary mb-2 flex items-center">
+              <i class="fa fa-lightbulb-o mr-2"></i> 小贴士
+            </h4>
+            <p class="text-gray-600 text-sm">隐藏款出现概率较低，不要为了追求隐藏款过度消费。盲盒的乐趣在于收集过程，而非必须拥有稀有款。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 收藏价值 -->
+  <section id="collection" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1 bg-secondary/10 text-secondary rounded-full text-sm font-medium mb-4">收藏价值</span>
+        <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">盲盒的收藏价值</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">除了带来乐趣，许多盲盒还具有一定的收藏和升值空间。</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
         <div>
-            <h2>开启未知的惊喜</h2>
-            <p>每一款盲盒都藏着独特的惊喜，收集属于你的专属回忆</p>
+          <h3 class="text-2xl font-bold mb-6">为什么盲盒具有收藏价值？</h3>
+          
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <div class="mt-1 text-secondary text-xl"><i class="fa fa-check-circle"></i></div>
+              <div>
+                <h4 class="font-bold text-lg mb-1">限量发行</h4>
+                <p class="text-gray-600">大多数盲盒系列都是限量生产，一旦售罄就不再版，稀缺性保证了其收藏价值。</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4">
+              <div class="mt-1 text-secondary text-xl"><i class="fa fa-check-circle"></i></div>
+              <div>
+                <h4 class="font-bold text-lg mb-1">设计独特</h4>
+                <p class="text-gray-600">许多知名设计师参与盲盒设计，赋予作品艺术价值，优秀的设计会随着时间增值。</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4">
+              <div class="mt-1 text-secondary text-xl"><i class="fa fa-check-circle"></i></div>
+              <div>
+                <h4 class="font-bold text-lg mb-1">隐藏款稀缺</h4>
+                <p class="text-gray-600">隐藏款出现概率极低，有些甚至只有1/1000的概率，成为收藏家追捧的对象。</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4">
+              <div class="mt-1 text-secondary text-xl"><i class="fa fa-check-circle"></i></div>
+              <div>
+                <h4 class="font-bold text-lg mb-1">文化价值</h4>
+                <p class="text-gray-600">一些具有时代特色或文化意义的系列，会随着时间推移成为一种文化符号，价值不断提升。</p>
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
+        
+        <div class="relative">
+          <img src="https://picsum.photos/id/160/600/700" alt="盲盒收藏展示" class="w-full rounded-2xl shadow-xl">
+          <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-lg max-w-xs">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                <i class="fa fa-line-chart text-primary"></i>
+              </div>
+              <h4 class="font-bold">市场趋势</h4>
+            </div>
+            <p class="text-gray-600 text-sm">根据市场数据，热门系列的隐藏款在二手市场价格可达原价的5-20倍，部分稀有款式甚至更高。</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 收藏展示 -->
+      <div class="bg-white rounded-2xl p-8 shadow-lg">
+        <h3 class="text-2xl font-bold mb-8 text-center">收藏家展示墙</h3>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <img src="https://picsum.photos/id/36/300/300" alt="收藏展示" class="rounded-lg w-full h-40 object-cover">
+          <img src="https://picsum.photos/id/46/300/300" alt="收藏展示" class="rounded-lg w-full h-40 object-cover">
+          <img src="https://picsum.photos/id/56/300/300" alt="收藏展示" class="rounded-lg w-full h-40 object-cover">
+          <img src="https://picsum.photos/id/66/300/300" alt="收藏展示" class="rounded-lg w-full h-40 object-cover">
+          <img src="https://picsum.photos/id/76/300/300" alt="收藏展示" class="rounded-lg w-full h-40 object-cover">
+          <img src="https://picsum.photos/id/86/300/300" alt="收藏展示" class="rounded-lg w-full h-40 object-cover">
+          <img src="https://picsum.photos/id/96/300/300" alt="收藏展示" class="rounded-lg w-full h-40 object-cover">
+          <img src="https://picsum.photos/id/106/300/300" alt="收藏展示" class="rounded-lg w-full h-40 object-cover">
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section class="container">
-        <h2>热门盲盒系列</h2>
-        <div class="collections-grid">
-            <div class="collection-card">
-                <h3>森林动物系列</h3>
-                <p>12款常规 + 1款隐藏</p>
-                <p style="color: #ff6b6b; margin-top: 1rem; font-weight: bold;">¥59</p>
-            </div>
-            <div class="collection-card">
-                <h3>梦幻精灵系列</h3>
-                <p>10款常规 + 2款特别版</p>
-                <p style="color: #ff6b6b; margin-top: 1rem; font-weight: bold;">¥69</p>
-            </div>
-            <div class="collection-card">
-                <h3>宇宙探索系列</h3>
-                <p>8款常规 + 1款隐藏</p>
-                <p style="color: #ff6b6b; margin-top: 1rem; font-weight: bold;">¥79</p>
-            </div>
+  <!-- 购买指南 -->
+  <section id="buy-guide" class="py-20">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">购买指南</span>
+        <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">如何购买盲盒</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">选择正规渠道购买，避免买到假货，同时合理规划消费。</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-2xl shadow-lg p-8 card-hover">
+          <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+            <i class="fa fa-shopping-bag text-2xl text-primary"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4">线下实体店</h3>
+          <p class="text-gray-600 mb-4">各大商场的潮玩店、玩具店通常都有盲盒专区，可以现场挑选，即时体验拆盒乐趣。</p>
+          <ul class="space-y-2 text-gray-600">
+            <li class="flex items-center gap-2"><i class="fa fa-check text-green-500"></i> 可以检查包装完整性</li>
+            <li class="flex items-center gap-2"><i class="fa fa-check text-green-500"></i> 即时获得，无需等待</li>
+            <li class="flex items-center gap-2"><i class="fa fa-times text-red-500"></i> 价格可能较高</li>
+          </ul>
         </div>
-    </section>
+        
+        <div class="bg-white rounded-2xl shadow-lg p-8 card-hover">
+          <div class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mb-6">
+            <i class="fa fa-globe text-2xl text-secondary"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4">官方线上商城</h3>
+          <p class="text-gray-600 mb-4">品牌官方网站或官方授权电商平台是最可靠的购买渠道，保证正品且常有活动。</p>
+          <ul class="space-y-2 text-gray-600">
+            <li class="flex items-center gap-2"><i class="fa fa-check text-green-500"></i> 100%正品保证</li>
+            <li class="flex items-center gap-2"><i class="fa fa-check text-green-500"></i> 常有独家活动和优惠</li>
+            <li class="flex items-center gap-2"><i class="fa fa-times text-red-500"></i> 需要等待配送</li>
+          </ul>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-lg p-8 card-hover">
+          <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+            <i class="fa fa-exchange text-2xl text-primary"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4">二手交易平台</h3>
+          <p class="text-gray-600 mb-4">适合寻找稀有款式或交换重复款式，但需要注意辨别真伪，选择信誉良好的卖家。</p>
+          <ul class="space-y-2 text-gray-600">
+            <li class="flex items-center gap-2"><i class="fa fa-check text-green-500"></i> 可找到稀有款式</li>
+            <li class="flex items-center gap-2"><i class="fa fa-check text-green-500"></i> 可以交换重复款</li>
+            <li class="flex items-center gap-2"><i class="fa fa-times text-red-500"></i> 存在假货风险</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="mt-16 bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 md:p-12 text-white">
+        <div class="max-w-3xl mx-auto text-center">
+          <h3 class="text-2xl md:text-3xl font-bold mb-6">理性消费提醒</h3>
+          <p class="mb-8 opacity-90">盲盒的核心乐趣在于收集的过程和未知的惊喜，请根据自身经济情况合理消费，不要为了追求隐藏款而过度投入。收藏是一种爱好，不应成为负担。</p>
+          <a href="#" class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full transition-all shadow-lg hover:shadow-white/30">
+            了解更多消费指南
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 盲盒世界 - 温子健</p>
+  <!-- 订阅区域 -->
+  <section id="subscribe" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12 max-w-4xl mx-auto">
+        <div class="text-center mb-10">
+          <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">获取最新盲盒资讯</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">订阅我们的 newsletter，第一时间获取新系列发布信息、限量款预售提醒和独家优惠。</p>
         </div>
-    </footer>
+        
+        <form class="max-w-xl mx-auto">
+          <div class="flex flex-col sm:flex-row gap-4">
+            <input type="email" placeholder="输入你的邮箱地址" class="flex-grow px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <button type="submit" class="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 rounded-full transition-all shadow-lg hover:shadow-primary/30 whitespace-nowrap">
+              立即订阅
+            </button>
+          </div>
+          <p class="text-gray-500 text-sm text-center mt-4">我们尊重您的隐私，不会向第三方分享您的信息。</p>
+        </form>
+        
+        <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div>
+            <div class="text-3xl font-bold text-primary mb-2">50+</div>
+            <p class="text-gray-600 text-sm">合作品牌</p>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-primary mb-2">200+</div>
+            <p class="text-gray-600 text-sm">盲盒系列</p>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-primary mb-2">10k+</div>
+            <p class="text-gray-600 text-sm">收藏爱好者</p>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-primary mb-2">每月</div>
+            <p class="text-gray-600 text-sm">新品更新</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white pt-16 pb-8">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+        <div>
+          <div class="flex items-center space-x-2 mb-6">
+            <span class="text-primary text-3xl"><i class="fa fa-gift"></i></span>
+            <span class="text-xl font-bold">盲盒世界</span>
+          </div>
+          <p class="text-gray-400 mb-6">探索盲盒的神秘与乐趣，发现收藏的魅力。</p>
+          <div class="flex space-x-4">
+            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+              <i class="fa fa-weibo"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+              <i class="fa fa-wechat"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+              <i class="fa fa-instagram"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-6">快速链接</h4>
+          <ul class="space-y-3">
+            <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">关于盲盒</a></li>
+            <li><a href="#series" class="text-gray-400 hover:text-white transition-colors">热门系列</a></li>
+            <li><a href="#how-to-play" class="text-gray-400 hover:text-white transition-colors">玩法介绍</a></li>
+            <li><a href="#collection" class="text-gray-400 hover:text-white transition-colors">收藏价值</a></li>
+            <li><a href="#buy-guide" class="text-gray-400 hover:text-white transition-colors">购买指南</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-6">帮助中心</h4>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">常见问题</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">真伪鉴别</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">购买须知</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">退换政策</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-6">联系我们</h4>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3">
+              <i class="fa fa-map-marker text-primary mt-1"></i>
+              <span class="text-gray-400">北京市朝阳区潮流文化中心A座1001室</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i class="fa fa-phone text-primary"></i>
+              <span class="text-gray-400">400-123-4567</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i class="fa fa-envelope text-primary"></i>
+              <span class="text-gray-400">info@mangheworld.com</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-500 text-sm mb-4 md:mb-0">© 2023 盲盒世界. 保留所有权利.</p>
+          <div class="flex space-x-6">
+            <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">隐私政策</a>
+            <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">使用条款</a>
+            <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Cookie政策</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 返回顶部按钮 -->
+  <button id="backToTop" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all z-50">
+    <i class="fa fa-arrow-up"></i>
+  </button>
+
+  <!-- JavaScript -->
+  <script>
+    // 移动端菜单切换
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      // 切换图标
+      const icon = menuBtn.querySelector('i');
+      if (icon.classList.contains('fa-bars')) {
+        icon.classList.replace('fa-bars', 'fa-times');
+      } else {
+        icon.classList.replace('fa-times', 'fa-bars');
+      }
+    });
+    
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('bg-white', 'shadow-md');
+        navbar.classList.remove('bg-transparent');
+      } else {
+        navbar.classList.remove('bg-white', 'shadow-md');
+      }
+    });
+    
+    // 返回顶部按钮
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.remove('opacity-0', 'invisible');
+        backToTopBtn.classList.add('opacity-100', 'visible');
+      } else {
+        backToTopBtn.classList.add('opacity-0', 'invisible');
+        backToTopBtn.classList.remove('opacity-100', 'visible');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // 点击导航链接关闭移动菜单
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        const icon = menuBtn.querySelector('i');
+        icon.classList.replace('fa-times', 'fa-bars');
+      });
+    });
+  </script>
 </body>
 </html>
